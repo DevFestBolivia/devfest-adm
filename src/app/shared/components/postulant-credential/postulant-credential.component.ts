@@ -7,25 +7,31 @@ import {
   Output,
   EventEmitter,
   OnInit,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 
 import { QRCodeComponent } from 'angularx-qrcode';
 
-import { Postulant } from '../../models/postulant.model';
+import { Postulant } from '../../../core/models/postulant.model';
 
 @Component({
   selector: 'wc-postulant-credential',
   templateUrl: './postulant-credential.component.html',
   styleUrls: ['./postulant-credential.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PostulantCredentialComponent implements OnInit, OnChanges {
-  qrData = 'QR was not generated yet';
-  @Output() credentialLoaded = new EventEmitter();
   @Input() canvasWidth: number;
   @Input() canvasHeight: number;
   @Input() postulant: Postulant;
+
+  @Output() credentialLoaded = new EventEmitter();
+
+  qrData = 'QR was not generated yet';
+
   @ViewChild('credentialCanvas', { static: true })
   credentialCanvas: ElementRef;
+
   @ViewChild('qrCode', { static: true })
   private qrCode: QRCodeComponent;
 

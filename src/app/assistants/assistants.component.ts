@@ -1,11 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { Subscription, Observable } from 'rxjs';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { AuthService } from '../auth/auth.service';
-import { AuthUser } from '../shared/models/auth-user.model';
-import { Postulant } from '../shared/models/postulant.model';
-import { PostulantsService } from '../shared/services/postulants.service';
+import { AuthUser } from '../core/models/auth-user.model';
+import { Postulant } from '../core/models/postulant.model';
+import { PostulantsService } from '../core/services/postulants.service';
 
 @Component({
   selector: 'wc-assistants',
@@ -13,12 +14,13 @@ import { PostulantsService } from '../shared/services/postulants.service';
   styleUrls: ['./assistants.component.scss'],
 })
 export class AssistantsComponent implements OnInit, OnDestroy {
-  searchTerm = '';
-  rfidInputEnabled = false;
-  currentUser$: Observable<AuthUser>;
-  currentAssistant: Postulant;
   assistants: Postulant[];
-  assistantsSubscription: Subscription;
+  currentAssistant: Postulant;
+  currentUser$ = this.auth.getCurrentUser();
+  rfidInputEnabled = false;
+  searchTerm = '';
+
+  private unsubscribe$ = new Subject<void>();
 
   constructor(
     public postulantsService: PostulantsService,
@@ -26,9 +28,9 @@ export class AssistantsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.currentUser$ = this.auth.getCurrentUser();
-    this.assistantsSubscription = this.postulantsService
+    this.postulantsService
       .getConfirmedPostulants()
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe((assistants) => {
         this.assistants = assistants;
         this.searchAssistant();
@@ -37,20 +39,22 @@ export class AssistantsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.assistantsSubscription.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   searchAssistant(): void {
     if (this.searchTerm) {
-      this.assistants.forEach((assistant) => {
-        assistant.visibleInSearch = assistant.fullName
-          .toLowerCase()
-          .includes(this.searchTerm.toLowerCase());
-      });
+      this.assistants.forEach(
+        (assistant) =>
+          (assistant.visibleInSearch = assistant.fullName
+            .toLowerCase()
+            .includes(this.searchTerm.toLowerCase())),
+      );
     } else {
-      this.assistants.forEach((assistant) => {
-        assistant.visibleInSearch = true;
-      });
+      this.assistants.forEach(
+        (assistant) => (assistant.visibleInSearch = true),
+      );
     }
   }
 

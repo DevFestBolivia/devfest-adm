@@ -1,13 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Subscription, Observable } from 'rxjs';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import { AuthUser } from '../../shared/models/auth-user.model';
 import { AuthService } from '../../auth/auth.service';
 import { PostulantCredentialComponent } from '../../shared/components/postulant-credential/postulant-credential.component';
-import { PostulantsService } from '../../shared/services/postulants.service';
-import { Postulant } from '../../shared/models/postulant.model';
+import { PostulantsService } from '../../core/services/postulants.service';
+import { Postulant } from '../../core/models/postulant.model';
 
 @Component({
   selector: 'wc-postulant',
@@ -15,11 +15,12 @@ import { Postulant } from '../../shared/models/postulant.model';
   styleUrls: ['./postulant.component.scss'],
 })
 export class PostulantComponent implements OnInit, OnDestroy {
-  currentUser$: Observable<AuthUser>;
-  postulantId: string;
-  postulant: Postulant;
-  postulantSubscription: Subscription;
   credential: PostulantCredentialComponent;
+  currentUser$ = this.auth.getCurrentUser();
+  postulant: Postulant;
+  postulantId = this.route.snapshot.paramMap.get('id');
+
+  private unsubscribe$ = new Subject<void>();
 
   constructor(
     public postulantsService: PostulantsService,
@@ -29,11 +30,9 @@ export class PostulantComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.currentUser$ = this.auth.getCurrentUser();
-    this.postulantId = this.route.snapshot.paramMap.get('id');
-
-    this.postulantSubscription = this.postulantsService
+    this.postulantsService
       .getById(this.postulantId)
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe((postulant) => {
         if (postulant) {
           this.postulant = postulant;
@@ -44,7 +43,8 @@ export class PostulantComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.postulantSubscription.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   setPostulantCredential(credential: PostulantCredentialComponent): void {

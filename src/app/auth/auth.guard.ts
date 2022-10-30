@@ -5,10 +5,10 @@ import { Observable } from 'rxjs';
 import { map, first } from 'rxjs/operators';
 
 import { AuthService } from './auth.service';
-import { AuthUser } from '../shared/models/auth-user.model';
-import { Roles } from '../shared/models/roles.model';
+import { AuthUser } from '../core/models/auth-user.model';
+import { Roles } from '../core/models/roles.model';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
   constructor(private router: Router, private auth: AuthService) {}
 

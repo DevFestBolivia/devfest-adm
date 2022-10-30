@@ -5,11 +5,11 @@ import { User } from 'firebase/auth';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { DataService } from '../shared/models/data-service.model';
-import { AuthUser } from '../shared/models/auth-user.model';
-import { FirestoreCollection } from '../shared/models/firestore-collection.enum';
+import { DataService } from '../core/models/data-service.model';
+import { AuthUser } from '../core/models/auth-user.model';
+import { FirestoreCollection } from '../core/models/firestore-collection.enum';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AuthUserService extends DataService<AuthUser> {
   constructor(db: AngularFirestore) {
     super(db, FirestoreCollection.users);

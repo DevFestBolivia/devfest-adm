@@ -14,6 +14,7 @@ import { Modal } from 'materialize-css';
 })
 export class ModalDirective implements OnInit {
   modalInstance: Modal;
+
   @Output() private modalClose = new EventEmitter();
 
   constructor(private elementRef: ElementRef) {}

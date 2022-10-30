@@ -7,7 +7,7 @@ import { StarRatingModule } from 'angular-star-rating';
 
 import { ScannerRoutingModule } from './scanner-routing.module';
 import { ScannerComponent } from './scanner.component';
-import { PostulantsService } from '../shared/services/postulants.service';
+import { PostulantsService } from '../core/services/postulants.service';
 import { ModalModule } from '../shared/directives/modal/modal.module';
 import { SelectModule } from '../shared/directives/select/select.module';
 
@@ -22,6 +22,5 @@ import { SelectModule } from '../shared/directives/select/select.module';
     SelectModule,
     ZXingScannerModule,
   ],
-  providers: [PostulantsService],
 })
 export class ScannerModule {}

@@ -1,10 +1,8 @@
-import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
+import { Component, ViewChildren, QueryList } from '@angular/core';
 
-import { Observable } from 'rxjs';
 import { jsPDF } from 'jspdf';
 
-import { PostulantsService } from '../shared/services/postulants.service';
-import { Postulant } from '../shared/models/postulant.model';
+import { PostulantsService } from '../core/services/postulants.service';
 import { PostulantCredentialComponent } from '../shared/components/postulant-credential/postulant-credential.component';
 
 const firstLineTop = 20;
@@ -18,16 +16,13 @@ const JPEG = 'JPEG';
   templateUrl: './credentials.component.html',
   styleUrls: ['./credentials.component.scss'],
 })
-export class CredentialsComponent implements OnInit {
-  assistants$: Observable<Postulant[]>;
+export class CredentialsComponent {
+  assistants$ = this.postulantsService.getAcceptedPostulants();
+
   @ViewChildren('credentials')
   credentials: QueryList<PostulantCredentialComponent>;
 
   constructor(private postulantsService: PostulantsService) {}
-
-  ngOnInit(): void {
-    this.assistants$ = this.postulantsService.getAcceptedPostulants();
-  }
 
   printCredentials(): void {
     const pdf = new jsPDF('p', 'pt', 'legal');

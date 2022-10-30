@@ -1,12 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { Subscription, Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { AuthService } from '../auth/auth.service';
-import { AuthUser } from '../shared/models/auth-user.model';
-import { PostulantsService } from '../shared/services/postulants.service';
-import { Postulant } from '../shared/models/postulant.model';
-import { DataOrder } from '../shared/models/data-order.enum';
+import { AuthUser } from '../core/models/auth-user.model';
+import { PostulantsService } from '../core/services/postulants.service';
+import { Postulant } from '../core/models/postulant.model';
+import { DataOrder } from '../core/models/data-order.enum';
 
 @Component({
   selector: 'wc-postulants',
@@ -14,11 +15,12 @@ import { DataOrder } from '../shared/models/data-order.enum';
   styleUrls: ['./postulants.component.scss'],
 })
 export class PostulantsComponent implements OnInit, OnDestroy {
-  searchTerm = '';
-  currentUser$: Observable<AuthUser>;
+  currentUser$ = this.auth.getCurrentUser();
   postulants: Postulant[];
-  postulantsSubscription: Subscription;
+  searchTerm = '';
   selectedPostulant: Postulant;
+
+  private unsubscribe$ = new Subject<void>();
 
   constructor(
     public postulantsService: PostulantsService,
@@ -26,9 +28,9 @@ export class PostulantsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.currentUser$ = this.auth.getCurrentUser();
-    this.postulantsSubscription = this.postulantsService
+    this.postulantsService
       .getAllSorted('fullName', DataOrder.asc)
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe((postulants) => {
         this.postulants = postulants;
         this.searchPostulant();
@@ -36,7 +38,8 @@ export class PostulantsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.postulantsSubscription.unsubscribe();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   setSelectedPostulant(postulant: Postulant): void {
@@ -51,9 +54,9 @@ export class PostulantsComponent implements OnInit, OnDestroy {
           .includes(this.searchTerm.toLowerCase());
       });
     } else {
-      this.postulants.forEach((postulant) => {
-        postulant.visibleInSearch = true;
-      });
+      this.postulants.forEach(
+        (postulant) => (postulant.visibleInSearch = true),
+      );
     }
   }
 }
