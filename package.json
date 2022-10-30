@@ -16,7 +16,8 @@
     "firebase:deploy": "firebase deploy -P default --only hosting:admin",
     "firebase:deploy-prod": "firebase deploy -P prod --only hosting:admin",
     "firebase:build-deploy": "npm run build && npm run firebase:deploy",
-    "firebase:build-deploy-prod": "ng run build:prod && npm run firebase:deploy-prod"
+    "firebase:build-deploy-prod": "ng run build:prod && npm run firebase:deploy-prod",
+    "prepare": "husky install"
   },
   "private": true,
   "dependencies": {
@@ -55,6 +56,7 @@
     "@types/node": "^12.11.1",
     "codelyzer": "^6.0.0",
     "firebase-tools": "^11.15.0",
+    "husky": "^8.0.1",
     "jasmine-core": "~3.8.0",
     "jasmine-spec-reporter": "~5.0.0",
     "karma": "~6.4.1",
@@ -62,6 +64,7 @@
     "karma-coverage-istanbul-reporter": "~3.0.2",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "^1.5.0",
+    "lint-staged": "^13.0.3",
     "prettier": "2.7.1",
     "protractor": "~7.0.0",
     "ts-custom-error": "^3.2.0",
@@ -69,5 +72,8 @@
     "tslib": "^2.4.0",
     "tslint": "~6.1.0",
     "typescript": "~4.6.4"
+  },
+  "lint-staged": {
+    "*.{js,css,md}": "prettier --write"
   }
 }
