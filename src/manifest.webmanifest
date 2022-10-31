@@ -1,7 +1,7 @@
 {
-  "name": "Weekend Coding",
-  "short_name": "Weekend Coding",
-  "theme_color": "#ea444b",
+  "name": "DevFest 2022 Admin",
+  "short_name": "DevFest 2022",
+  "theme_color": "#2563eb",
   "background_color": "#fafafa",
   "display": "standalone",
   "scope": "/",
