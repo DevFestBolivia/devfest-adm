@@ -5,11 +5,18 @@ import { jsPDF } from 'jspdf';
 import { PostulantsService } from '../core/services/postulants.service';
 import { PostulantCredentialComponent } from '../shared/components/postulant-credential/postulant-credential.component';
 
-const firstLineTop = 20;
-const secondLineTop = 525;
+const credentialHeight = 455;
+const credentialWidth = 280;
 const firstItemLeft = 15;
-const secondItemLeft = 315;
+const firstLineTop = 20;
 const JPEG = 'JPEG';
+const secondItemLeft = 315;
+const secondLineTop = 525;
+
+interface CredentialPositionData {
+  leftPosition: number;
+  topPosition: number;
+}
 
 @Component({
   selector: 'wc-credentials',
@@ -22,6 +29,28 @@ export class CredentialsComponent {
   @ViewChildren('credentials')
   credentials: QueryList<PostulantCredentialComponent>;
 
+  private readonly CREDENTIALS_POSITION_DATA: Record<
+    number,
+    CredentialPositionData
+  > = {
+    1: {
+      leftPosition: firstItemLeft,
+      topPosition: firstLineTop,
+    },
+    2: {
+      leftPosition: secondItemLeft,
+      topPosition: firstLineTop,
+    },
+    3: {
+      leftPosition: firstItemLeft,
+      topPosition: secondLineTop,
+    },
+    4: {
+      leftPosition: secondItemLeft,
+      topPosition: secondLineTop,
+    },
+  };
+
   constructor(private postulantsService: PostulantsService) {}
 
   printCredentials(): void {
@@ -32,62 +61,31 @@ export class CredentialsComponent {
 
     this.credentials.forEach((credential) => {
       counter++;
+      drawCounter++;
 
       const credentialData =
         credential.credentialCanvas.nativeElement.toDataURL('image/jpeg', 1.0);
+      const { leftPosition, topPosition } =
+        this.CREDENTIALS_POSITION_DATA[counter];
 
-      switch (counter) {
-        case 1:
-          pdf.addImage(
-            credentialData,
-            JPEG,
-            firstItemLeft,
-            firstLineTop,
-            280,
-            455,
-          );
-          drawCounter++;
-          break;
-        case 2:
-          pdf.addImage(
-            credentialData,
-            JPEG,
-            secondItemLeft,
-            firstLineTop,
-            280,
-            455,
-          );
-          drawCounter++;
-          break;
-        case 3:
-          pdf.addImage(
-            credentialData,
-            JPEG,
-            firstItemLeft,
-            secondLineTop,
-            280,
-            455,
-          );
-          drawCounter++;
-          break;
-        case 4:
-          pdf.addImage(
-            credentialData,
-            JPEG,
-            secondItemLeft,
-            secondLineTop,
-            280,
-            455,
-          );
-          drawCounter++;
-          if (quantityOfCredentials !== drawCounter) {
-            pdf.addPage();
-          }
-          counter = 0;
-          break;
+      pdf.addImage(
+        credentialData,
+        JPEG,
+        leftPosition,
+        topPosition,
+        credentialWidth,
+        credentialHeight,
+      );
+
+      if (counter === 4) {
+        if (quantityOfCredentials !== drawCounter) {
+          pdf.addPage();
+        }
+
+        counter = 0;
       }
     });
 
-    pdf.save('wc-credentials.pdf');
+    pdf.save('devfest-credentials.pdf');
   }
 }
