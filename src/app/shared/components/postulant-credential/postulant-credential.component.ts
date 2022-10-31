@@ -25,8 +25,6 @@ export class PostulantCredentialComponent implements OnInit, OnChanges {
   @Input() canvasHeight: number;
   @Input() postulant: Postulant;
 
-  @Output() credentialLoaded = new EventEmitter();
-
   qrData = 'QR was not generated yet';
 
   @ViewChild('credentialCanvas', { static: true })
@@ -34,6 +32,8 @@ export class PostulantCredentialComponent implements OnInit, OnChanges {
 
   @ViewChild('qrCode', { static: true })
   private qrCode: QRCodeComponent;
+
+  @Output() private credentialLoaded = new EventEmitter();
 
   ngOnInit(): void {
     this.credentialLoaded.emit();

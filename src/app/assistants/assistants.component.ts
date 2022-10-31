@@ -28,7 +28,7 @@ export class AssistantsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.postulantsService
-      .getConfirmedPostulants()
+      .getAcceptedPostulants()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((assistants) => {
         this.assistants = assistants;

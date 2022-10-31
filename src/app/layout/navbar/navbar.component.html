@@ -8,7 +8,7 @@
             src="assets/images/logo.png"
             alt="Weekend Coding"
         /></a>
-        <ng-container *ngIf="currentUser">
+        <ng-container *ngIf="currentUser$ | async as currentUser">
           <a data-target="mobile-menu" class="sidenav-trigger">
             <i class="fa fa-bars"></i>
           </a>
@@ -34,7 +34,7 @@
     </div>
   </nav>
 
-  <ng-container *ngIf="currentUser">
+  <ng-container *ngIf="currentUser$ | async as currentUser">
     <ul wcSidenav id="mobile-menu" class="sidenav">
       <li
         ><a

@@ -27,11 +27,12 @@ export class ScannerComponent implements OnDestroy {
   postulant: Postulant;
   postulantId: string;
   postulantPoints = defaultRate;
-  postulantSubscription: Subscription;
   selectedItemForScan: string;
 
   @ViewChild('postulantProcessedModal', { static: true })
-  postulantModal: ModalDirective;
+  private postulantModal: ModalDirective;
+
+  private postulantSubscription: Subscription;
 
   constructor(
     private auth: AuthService,

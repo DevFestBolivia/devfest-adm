@@ -17,8 +17,8 @@ export class PostulantComponent implements OnInit, OnDestroy {
   credential: PostulantCredentialComponent;
   currentUser$ = this.auth.getCurrentUser();
   postulant: Postulant;
-  postulantId = this.route.snapshot.paramMap.get('id');
 
+  private postulantId = this.route.snapshot.paramMap.get('id');
   private unsubscribe$ = new Subject<void>();
 
   constructor(

@@ -26,7 +26,7 @@ export class CredentialsComponent {
   assistants$ = this.postulantsService.getAcceptedPostulants();
 
   @ViewChildren('credentials')
-  credentials: QueryList<PostulantCredentialComponent>;
+  private credentials: QueryList<PostulantCredentialComponent>;
 
   private readonly CREDENTIALS_POSITION_DATA: Record<
     number,
