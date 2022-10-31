@@ -60,9 +60,9 @@
                 postulant.phone
               }}</a>
             </td>
-            <td class="hide-on-small-only">
+            <td>
               <a
-                href="{{ postulant.transferSupportURL }}"
+                [href]="postulant.transferSupportURL"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -73,13 +73,9 @@
               <label>
                 <input
                   type="checkbox"
-                  [checked]="postulant.credentialSent"
-                  [disabled]="!postulant.validated"
+                  [checked]="postulant.validated"
                   (change)="
-                    postulantsService.markCredentialAsSent(
-                      currentUser,
-                      postulant
-                    )
+                    postulantsService.acceptPostulant(currentUser, postulant)
                   "
                 />
                 <span></span>
@@ -89,10 +85,10 @@
               <label>
                 <input
                   type="checkbox"
-                  [checked]="postulant.bevyFilled"
-                  [disabled]="!postulant.validated || !postulant.credentialSent"
+                  [checked]="postulant.credentialSent"
+                  [disabled]="!postulant.validated"
                   (change)="
-                    postulantsService.confirmPostulantAssistance(
+                    postulantsService.markCredentialAsSent(
                       currentUser,
                       postulant
                     )
