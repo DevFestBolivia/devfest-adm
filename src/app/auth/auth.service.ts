@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 
-import { Observable, of } from 'rxjs';
+import { Observable, of, timer } from 'rxjs';
 import { switchMap, first } from 'rxjs/operators';
 
 import { AuthUserService } from './auth-user.service';
@@ -43,9 +43,7 @@ export class AuthService {
           .pipe(first())
           .subscribe((_) => this.router.navigate(['']));
 
-        setTimeout(() => {
-          this.loading = false;
-        }, 500);
+        timer(500).subscribe(() => (this.loading = false));
       })
       .catch((err) => {
         this.message = err;
@@ -56,11 +54,7 @@ export class AuthService {
   logout(): void {
     this.afAuth
       .signOut()
-      .then((_) => {
-        this.router.navigate(['/login']);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+      .then((_) => this.router.navigate(['/login']))
+      .catch((err) => console.error(err));
   }
 }

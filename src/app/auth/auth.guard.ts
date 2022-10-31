@@ -22,10 +22,10 @@ export class AuthGuard implements CanActivate {
           return this.checkAccess(user, path);
         } else if (path === 'login') {
           return true;
-        } else {
-          this.router.navigate(['/login']);
-          return false;
         }
+
+        this.router.navigate(['/login']);
+        return false;
       }),
     );
   }

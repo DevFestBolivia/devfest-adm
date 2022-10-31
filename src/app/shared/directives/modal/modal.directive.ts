@@ -21,9 +21,7 @@ export class ModalDirective implements OnInit {
 
   ngOnInit(): void {
     this.modalInstance = Modal.init(this.elementRef.nativeElement, {
-      onCloseEnd: () => {
-        this.modalClose.emit();
-      },
+      onCloseEnd: () => this.modalClose.emit(),
     });
   }
 }

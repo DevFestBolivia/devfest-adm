@@ -48,11 +48,12 @@ export class PostulantsComponent implements OnInit, OnDestroy {
 
   searchPostulant(): void {
     if (this.searchTerm) {
-      this.postulants.forEach((postulant) => {
-        postulant.visibleInSearch = postulant.fullName
-          .toLowerCase()
-          .includes(this.searchTerm.toLowerCase());
-      });
+      this.postulants.forEach(
+        (postulant) =>
+          (postulant.visibleInSearch = postulant.fullName
+            .toLowerCase()
+            .includes(this.searchTerm.toLowerCase())),
+      );
     } else {
       this.postulants.forEach(
         (postulant) => (postulant.visibleInSearch = true),

@@ -51,7 +51,12 @@
             "buildOptimizer": false,
             "sourceMap": true,
             "optimization": false,
-            "namedChunks": true
+            "namedChunks": true,
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "./node_modules"
+              ]
+            }
           },
           "configurations": {
             "production": {
@@ -80,7 +85,16 @@
                 }
               ],
               "serviceWorker": true,
-              "ngswConfigPath": "ngsw-config.json"
+              "ngswConfigPath": "ngsw-config.json",
+              "allowedCommonJsDependencies": [
+                "materialize-css",
+                "@cordobo/qrcode",
+                "core-js",
+                "raf",
+                "rgbcolor",
+                "dompurify",
+                "html2canvas"
+              ]
             }
           },
           "defaultConfiguration": ""
@@ -115,7 +129,12 @@
               "src/favicon.ico",
               "src/assets",
               "src/manifest.webmanifest"
-            ]
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "./node_modules"
+              ]
+            }
           }
         },
         "deploy": {
