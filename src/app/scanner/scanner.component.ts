@@ -1,12 +1,12 @@
-import { Component, OnDestroy, ViewChild, OnInit } from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 
-import { Subscription, Observable, timer } from 'rxjs';
+import { Subscription, timer } from 'rxjs';
 import { first } from 'rxjs/operators';
 
-import { AuthService } from '../auth/auth.service';
-import { AuthUser } from '../shared/models/auth-user.model';
-import { PostulantsService } from '../shared/services/postulants.service';
-import { Postulant } from '../shared/models/postulant.model';
+import { AuthService } from '../core/services/auth/auth.service';
+import { AuthUser } from '../core/models/auth-user.model';
+import { PostulantsService } from '../core/services/postulants.service';
+import { Postulant } from '../core/models/postulant.model';
 import { ModalDirective } from '../shared/directives/modal/modal.directive';
 
 const defaultRate = 3;
@@ -16,19 +16,19 @@ const defaultRate = 3;
   templateUrl: './scanner.component.html',
   styleUrls: ['./scanner.component.scss'],
 })
-export class ScannerComponent implements OnInit, OnDestroy {
+export class ScannerComponent implements OnDestroy {
+  currentUser$ = this.auth.getCurrentUser();
   images = {
     info: 'assets/images/processed.png',
     error: 'assets/images/error.png',
   };
   modalImage = this.images.error;
-  postulantPoints = defaultRate;
-  currentUser$: Observable<AuthUser>;
   modalMessage: string;
-  selectedItemForScan: string;
-  postulantId: string;
   postulant: Postulant;
+  postulantId: string;
+  postulantPoints = defaultRate;
   postulantSubscription: Subscription;
+  selectedItemForScan: string;
 
   @ViewChild('postulantProcessedModal', { static: true })
   postulantModal: ModalDirective;
@@ -38,10 +38,6 @@ export class ScannerComponent implements OnInit, OnDestroy {
     private postulantsService: PostulantsService,
   ) {}
 
-  ngOnInit(): void {
-    this.currentUser$ = this.auth.getCurrentUser();
-  }
-
   ngOnDestroy(): void {
     this.postulantSubscription?.unsubscribe();
   }
@@ -49,6 +45,11 @@ export class ScannerComponent implements OnInit, OnDestroy {
   processQRCode(postulantId: string, currentUser: AuthUser): void {
     if (!this.postulantId && postulantId) {
       this.postulantId = encodeURIComponent(postulantId);
+
+      if (this.postulantSubscription) {
+        this.postulantSubscription.unsubscribe();
+      }
+
       this.postulantSubscription = this.postulantsService
         .getById(postulantId)
         .pipe(first())

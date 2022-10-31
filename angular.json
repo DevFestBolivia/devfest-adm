@@ -51,7 +51,21 @@
             "buildOptimizer": false,
             "sourceMap": true,
             "optimization": false,
-            "namedChunks": true
+            "namedChunks": true,
+            "allowedCommonJsDependencies": [
+              "materialize-css",
+              "@cordobo/qrcode",
+              "core-js",
+              "raf",
+              "rgbcolor",
+              "dompurify",
+              "html2canvas"
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "./node_modules"
+              ]
+            }
           },
           "configurations": {
             "production": {
@@ -115,7 +129,12 @@
               "src/favicon.ico",
               "src/assets",
               "src/manifest.webmanifest"
-            ]
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "./node_modules"
+              ]
+            }
           }
         },
         "deploy": {
@@ -126,6 +145,12 @@
             "browserTarget": "weekend-coding:build:production",
             "firebaseProject": "devfest2022dev",
             "firebaseHostingSite": "devfest-devadmin"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
           }
         }
       }
@@ -149,5 +174,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "schematicCollections": ["@angular-eslint/schematics"]
   }
 }

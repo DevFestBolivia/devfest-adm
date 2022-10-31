@@ -9,7 +9,7 @@ import { FirestoreCollection } from '../models/firestore-collection.enum';
 import { DataOrder } from '../models/data-order.enum';
 import { AuthUser } from '../models/auth-user.model';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class PostulantsService extends DataService<Postulant> {
   constructor(db: AngularFirestore) {
     super(db, FirestoreCollection.attendees);

@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 import { PostulantsRoutingModule } from './postulants-routing.module';
-import { PostulantsService } from '../shared/services/postulants.service';
+import { PostulantsService } from '../core/services/postulants.service';
 import { PostulantsComponent } from './postulants.component';
 import { PostulantComponent } from './postulant/postulant.component';
 import { PostulantCredentialModule } from '../shared/components/postulant-credential/postulant-credential.module';
@@ -20,6 +20,5 @@ import { ModalModule } from '../shared/directives/modal/modal.module';
     PostulantCredentialModule,
     ModalModule,
   ],
-  providers: [PostulantsService],
 })
 export class PostulantsModule {}

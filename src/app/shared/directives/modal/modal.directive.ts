@@ -14,15 +14,14 @@ import { Modal } from 'materialize-css';
 })
 export class ModalDirective implements OnInit {
   modalInstance: Modal;
+
   @Output() private modalClose = new EventEmitter();
 
   constructor(private elementRef: ElementRef) {}
 
   ngOnInit(): void {
     this.modalInstance = Modal.init(this.elementRef.nativeElement, {
-      onCloseEnd: () => {
-        this.modalClose.emit();
-      },
+      onCloseEnd: () => this.modalClose.emit(),
     });
   }
 }

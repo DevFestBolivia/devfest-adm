@@ -1,33 +1,56 @@
-import { Component, OnInit, ViewChildren, QueryList } from '@angular/core';
+import { Component, ViewChildren, QueryList } from '@angular/core';
 
-import { Observable } from 'rxjs';
 import { jsPDF } from 'jspdf';
 
-import { PostulantsService } from '../shared/services/postulants.service';
-import { Postulant } from '../shared/models/postulant.model';
+import { PostulantsService } from '../core/services/postulants.service';
 import { PostulantCredentialComponent } from '../shared/components/postulant-credential/postulant-credential.component';
 
-const firstLineTop = 20;
-const secondLineTop = 525;
+const credentialHeight = 455;
+const credentialWidth = 280;
 const firstItemLeft = 15;
-const secondItemLeft = 315;
+const firstLineTop = 20;
 const JPEG = 'JPEG';
+const secondItemLeft = 315;
+const secondLineTop = 525;
+
+interface CredentialPositionData {
+  leftPosition: number;
+  topPosition: number;
+}
 
 @Component({
   selector: 'wc-credentials',
   templateUrl: './credentials.component.html',
-  styleUrls: ['./credentials.component.scss'],
 })
-export class CredentialsComponent implements OnInit {
-  assistants$: Observable<Postulant[]>;
+export class CredentialsComponent {
+  assistants$ = this.postulantsService.getAcceptedPostulants();
+
   @ViewChildren('credentials')
   credentials: QueryList<PostulantCredentialComponent>;
 
-  constructor(private postulantsService: PostulantsService) {}
+  private readonly CREDENTIALS_POSITION_DATA: Record<
+    number,
+    CredentialPositionData
+  > = {
+    1: {
+      leftPosition: firstItemLeft,
+      topPosition: firstLineTop,
+    },
+    2: {
+      leftPosition: secondItemLeft,
+      topPosition: firstLineTop,
+    },
+    3: {
+      leftPosition: firstItemLeft,
+      topPosition: secondLineTop,
+    },
+    4: {
+      leftPosition: secondItemLeft,
+      topPosition: secondLineTop,
+    },
+  };
 
-  ngOnInit(): void {
-    this.assistants$ = this.postulantsService.getAcceptedPostulants();
-  }
+  constructor(private postulantsService: PostulantsService) {}
 
   printCredentials(): void {
     const pdf = new jsPDF('p', 'pt', 'legal');
@@ -37,62 +60,31 @@ export class CredentialsComponent implements OnInit {
 
     this.credentials.forEach((credential) => {
       counter++;
+      drawCounter++;
 
       const credentialData =
         credential.credentialCanvas.nativeElement.toDataURL('image/jpeg', 1.0);
+      const { leftPosition, topPosition } =
+        this.CREDENTIALS_POSITION_DATA[counter];
 
-      switch (counter) {
-        case 1:
-          pdf.addImage(
-            credentialData,
-            JPEG,
-            firstItemLeft,
-            firstLineTop,
-            280,
-            455,
-          );
-          drawCounter++;
-          break;
-        case 2:
-          pdf.addImage(
-            credentialData,
-            JPEG,
-            secondItemLeft,
-            firstLineTop,
-            280,
-            455,
-          );
-          drawCounter++;
-          break;
-        case 3:
-          pdf.addImage(
-            credentialData,
-            JPEG,
-            firstItemLeft,
-            secondLineTop,
-            280,
-            455,
-          );
-          drawCounter++;
-          break;
-        case 4:
-          pdf.addImage(
-            credentialData,
-            JPEG,
-            secondItemLeft,
-            secondLineTop,
-            280,
-            455,
-          );
-          drawCounter++;
-          if (quantityOfCredentials !== drawCounter) {
-            pdf.addPage();
-          }
-          counter = 0;
-          break;
+      pdf.addImage(
+        credentialData,
+        JPEG,
+        leftPosition,
+        topPosition,
+        credentialWidth,
+        credentialHeight,
+      );
+
+      if (counter === 4) {
+        if (quantityOfCredentials !== drawCounter) {
+          pdf.addPage();
+        }
+
+        counter = 0;
       }
     });
 
-    pdf.save('wc-credentials.pdf');
+    pdf.save('devfest-credentials.pdf');
   }
 }
