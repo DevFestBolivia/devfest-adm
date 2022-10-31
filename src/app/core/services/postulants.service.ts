@@ -26,18 +26,6 @@ export class PostulantsService extends DataService<Postulant> {
       .valueChanges();
   }
 
-  getConfirmedPostulants(): Observable<Postulant[]> {
-    return this.db
-      .collection<Postulant>(this.collection, (ref) =>
-        ref
-          .where('deleted', '==', false)
-          .where('validated', '==', true)
-          .where('bevyFilled', '==', true)
-          .orderBy('fullName', DataOrder.asc),
-      )
-      .valueChanges();
-  }
-
   acceptPostulant(user: AuthUser, postulant: Postulant): boolean {
     if (user.roles.admin) {
       postulant.validated = !postulant.validated;
