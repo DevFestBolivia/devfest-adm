@@ -6,7 +6,6 @@ import { ModalDirective } from './shared/directives/modal/modal.directive';
 @Component({
   selector: 'wc-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
   @ViewChild('updateModal', { static: true })

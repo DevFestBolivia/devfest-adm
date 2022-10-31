@@ -16,7 +16,8 @@
     "firebase:deploy": "firebase deploy -P default --only hosting:admin",
     "firebase:deploy-prod": "firebase deploy -P prod --only hosting:admin",
     "firebase:build-deploy": "npm run build && npm run firebase:deploy",
-    "firebase:build-deploy-prod": "ng run build:prod && npm run firebase:deploy-prod"
+    "firebase:build-deploy-prod": "ng run build:prod && npm run firebase:deploy-prod",
+    "prepare": "husky install"
   },
   "private": true,
   "dependencies": {
@@ -44,6 +45,11 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^14.2.7",
+    "@angular-eslint/builder": "14.1.2",
+    "@angular-eslint/eslint-plugin": "14.1.2",
+    "@angular-eslint/eslint-plugin-template": "14.1.2",
+    "@angular-eslint/schematics": "14.1.2",
+    "@angular-eslint/template-parser": "14.1.2",
     "@angular/cli": "^14.2.7",
     "@angular/compiler-cli": "^14.2.8",
     "@angular/language-service": "^14.2.8",
@@ -53,8 +59,11 @@
     "@types/jspdf": "^2.0.0",
     "@types/materialize-css": "^1.0.11",
     "@types/node": "^12.11.1",
-    "codelyzer": "^6.0.0",
+    "@typescript-eslint/eslint-plugin": "5.37.0",
+    "@typescript-eslint/parser": "5.37.0",
+    "eslint": "^8.23.1",
     "firebase-tools": "^11.15.0",
+    "husky": "^8.0.1",
     "jasmine-core": "~3.8.0",
     "jasmine-spec-reporter": "~5.0.0",
     "karma": "~6.4.1",
@@ -62,12 +71,16 @@
     "karma-coverage-istanbul-reporter": "~3.0.2",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "^1.5.0",
+    "lint-staged": "^13.0.3",
     "prettier": "2.7.1",
     "protractor": "~7.0.0",
     "ts-custom-error": "^3.2.0",
     "ts-node": "~7.0.0",
     "tslib": "^2.4.0",
-    "tslint": "~6.1.0",
     "typescript": "~4.6.4"
+  },
+  "lint-staged": {
+    "*.{js,ts}": "eslint --fix",
+    "*.{js,ts,scss,html}": "prettier --write"
   }
 }

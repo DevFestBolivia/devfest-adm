@@ -1,3 +1,5 @@
+@use '../../../styles.colors.scss' as colors;
+
 #sign-out-mobile {
   position: absolute;
   width: 100%;
@@ -8,4 +10,8 @@
   padding: 5px;
   height: 100%;
   object-fit: contain;
+}
+
+.nav-wrapper {
+  background-color: colors.$primary-color;
 }

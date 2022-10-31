@@ -5,10 +5,10 @@ import { Observable } from 'rxjs';
 import { map, first } from 'rxjs/operators';
 
 import { AuthService } from './auth.service';
-import { AuthUser } from '../shared/models/auth-user.model';
-import { Roles } from '../shared/models/roles.model';
+import { AuthUser } from '../../models/auth-user.model';
+import { Roles } from '../../models/roles.model';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
   constructor(private router: Router, private auth: AuthService) {}
 
@@ -22,10 +22,10 @@ export class AuthGuard implements CanActivate {
           return this.checkAccess(user, path);
         } else if (path === 'login') {
           return true;
-        } else {
-          this.router.navigate(['/login']);
-          return false;
         }
+
+        this.router.navigate(['/login']);
+        return false;
       }),
     );
   }
