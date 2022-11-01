@@ -58,12 +58,23 @@ export class PostulantCredentialComponent implements OnInit, OnChanges {
         this.credentialCanvas.nativeElement as HTMLCanvasElement
       ).getContext('2d');
       const templateImage = new Image();
-      const qrTop = 210;
-      const qrLeft = 35;
+      const qrTop = 0;
+      const qrLeft = 0;
       const nameTop = 190;
       const nameLeft = this.canvasWidth / 2;
+      
+      switch (this.postulant.ticket) {
+        case 'VERDE':
+          templateImage.src = 'assets/images/bracelet-green.png';
+          break;
+        case 'AMARILLO':
+          templateImage.src = 'assets/images/bracelet-yellow.png';
+          break;
+        case 'ROJO':
+          templateImage.src = 'assets/images/bracelet-red.png';
+          break;
+      }
 
-      templateImage.src = 'assets/images/cred-vertical.png';
       templateImage.onload = () => {
         let qrImage = this.qrCode.qrcElement.nativeElement.querySelector('img');
 
@@ -76,7 +87,7 @@ export class PostulantCredentialComponent implements OnInit, OnChanges {
           context.drawImage(templateImage, 0, 0);
           context.font = '20px Montserrat';
           context.textAlign = 'center';
-          context.fillText(this.postulant.fullName, nameLeft, nameTop);
+          context.fillText('', nameLeft, nameTop);
           context.drawImage(qrImage, qrLeft, qrTop);
         }
       };
