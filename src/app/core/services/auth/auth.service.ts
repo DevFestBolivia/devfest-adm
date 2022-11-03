@@ -7,6 +7,7 @@ import { switchMap, first } from 'rxjs/operators';
 
 import { AuthUserService } from './auth-user.service';
 import { AuthUser } from '../../models/auth-user.model';
+import { PostulantsService } from '../postulants.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -17,6 +18,7 @@ export class AuthService {
     private afAuth: AngularFireAuth,
     private router: Router,
     private userService: AuthUserService,
+    public postulantsService: PostulantsService,
   ) {}
 
   getCurrentUser(): Observable<AuthUser> {
@@ -36,8 +38,12 @@ export class AuthService {
 
     this.afAuth
       .signInWithEmailAndPassword(email, password)
-      .then((credential) => {
+      .then(async (credential) => {
         this.message = '';
+        const isPostulantExist = await this.postulantsService.getIsPostulantExist(email)
+        if (isPostulantExist) {
+          throw new Error('This user does not permission for this site')
+        }
         this.userService
           .assertAuthUser(credential.user)
           .pipe(first())
