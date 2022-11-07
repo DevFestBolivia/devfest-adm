@@ -1,11 +1,11 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subject, of } from 'rxjs';
 
 import { AuthService } from '../../core/services/auth/auth.service';
 import { Postulant } from '../../core/models/postulant.model';
 import { PostulantCredentialComponent } from '../../shared/components/postulant-credential/postulant-credential.component';
 import { PostulantsService } from '../../core/services/postulants.service';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
