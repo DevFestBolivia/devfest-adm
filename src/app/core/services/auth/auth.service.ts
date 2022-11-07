@@ -18,7 +18,7 @@ export class AuthService {
     private afAuth: AngularFireAuth,
     private router: Router,
     private userService: AuthUserService,
-    public postulantsService: PostulantsService,
+    private postulantsService: PostulantsService,
   ) {}
 
   getCurrentUser(): Observable<AuthUser> {
@@ -40,13 +40,19 @@ export class AuthService {
       .signInWithEmailAndPassword(email, password)
       .then(async (credential) => {
         this.message = '';
-        const isPostulantExist = await this.postulantsService.getIsPostulantExist(email)
-        if (isPostulantExist) {
-          throw new Error('This user does not permission for this site')
-        }
-        this.userService
-          .assertAuthUser(credential.user)
-          .pipe(first())
+
+        this.postulantsService
+          .getById(credential.user.uid)
+          .pipe(
+            switchMap((postulant) => {
+              if (!postulant) {
+                return this.userService.assertAuthUser(credential.user);
+              }
+              this.message = 'This user does not have permission to access this site.'
+              throw new Error('This user does not have permission to access this site.');
+            }),
+            first(),
+          )
           .subscribe((_) => this.router.navigate(['']));
 
         timer(500).subscribe(() => (this.loading = false));

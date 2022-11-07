@@ -44,13 +44,13 @@ export abstract class DataService<T extends DataType> {
       .valueChanges();
   }
 
-  getById(id: string): Observable<T> {
+  getById(id: string, validateDeletedFlag= true): Observable<T> {
     return this.db
       .doc<T>(`${this.collection}/${id}`)
       .valueChanges()
       .pipe(
         map((data) => {
-          if (data && !data.deleted) {
+          if ((data && !data.deleted) || !validateDeletedFlag) {
             return data;
           }
 

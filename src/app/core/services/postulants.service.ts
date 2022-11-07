@@ -15,13 +15,6 @@ export class PostulantsService extends DataService<Postulant> {
     super(db, FirestoreCollection.attendees);
   }
 
-  getIsPostulantExist(email: string): Promise<boolean> {
-    return this.db.collection(this.collection, ref => ref.where('email', '==', email)).get().toPromise().then(
-      (data) => {
-        return data.docs.length > 0
-      })
-  }
-
   getAcceptedPostulants(): Observable<Postulant[]> {
     return this.db
       .collection<Postulant>(this.collection, (ref) =>
