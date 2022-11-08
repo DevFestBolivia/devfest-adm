@@ -38,7 +38,7 @@ export class AuthService {
 
     this.afAuth
       .signInWithEmailAndPassword(email, password)
-      .then(async (credential) => {
+      .then((credential) => {
         this.message = '';
 
         this.postulantsService
