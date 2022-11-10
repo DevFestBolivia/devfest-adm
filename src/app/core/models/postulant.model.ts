@@ -4,6 +4,7 @@ import { Ticket } from './ticket.enum';
 export interface Postulant extends DataType {
   bevyFilled?: boolean;
   credentialSent?: boolean;
+  city: string;
   email: string;
   foodRestriction: string;
   fullName: string;
@@ -14,13 +15,13 @@ export interface Postulant extends DataType {
   validated?: boolean;
 
   // Registries
+  accumulatedPoints?: number;
   checkIn?: boolean;
   feeForLunchReceived?: boolean;
-  lunchDelivered?: boolean;
   firstSnackDelivered?: boolean;
-  secondSnackDelivered?: boolean;
-  visibleInSearch?: boolean;
-  teachersWhoGavePoints?: any;
-  accumulatedPoints?: number;
   rfid?: string;
+  lunchDelivered?: boolean;
+  secondSnackDelivered?: boolean;
+  teachersWhoGavePoints?: any;
+  visibleInSearch?: boolean;
 }

@@ -62,7 +62,7 @@ export class PostulantCredentialComponent implements OnInit, OnChanges {
       const qrLeft = 0;
       const nameTop = 190;
       const nameLeft = this.canvasWidth / 2;
-      
+
       switch (this.postulant.ticket) {
         case 'VERDE':
           templateImage.src = 'assets/images/bracelet-green.png';

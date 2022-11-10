@@ -16,11 +16,20 @@
         </div>
       </div>
       <div class="col s12">
-        <div class="card-panel teal white-text">
+        <div class="card-panel">
           <p><b>Email: </b> {{ postulant.email }}</p>
           <p><b>Phone: </b> {{ postulant.phone }}</p>
+          <p><b>City: </b> {{ postulant.city }}</p>
+          <p><b>Ticket: </b> {{ postulant.ticket }}</p>
+          <a
+            class="btn" 
+            [href]="postulant.transferSupportURL"
+            target="_blank"
+          >
+            Open Bank Transfer Receipt
+          </a>
           <p>
-            <label class="white-text">
+            <label>
               <input
                 type="checkbox"
                 [checked]="postulant.validated"
@@ -32,7 +41,7 @@
             </label>
           </p>
           <p>
-            <label class="white-text">
+            <label>
               <input
                 type="checkbox"
                 [checked]="postulant.credentialSent"
@@ -45,7 +54,7 @@
             </label>
           </p>
           <p>
-            <label class="white-text">
+            <label>
               <input
                 type="checkbox"
                 [checked]="postulant.bevyFilled"
