@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 
 import { QRCodeComponent } from 'angularx-qrcode';
+import { Ticket } from 'src/app/core/models/ticket.enum';
 
 import { Postulant } from '../../../core/models/postulant.model';
 
@@ -34,6 +35,12 @@ export class PostulantCredentialComponent implements OnInit, OnChanges {
   private qrCode: QRCodeComponent;
 
   @Output() private credentialLoaded = new EventEmitter();
+
+  private readonly TICKET_PATHS: Record<Ticket, string> = {
+    [Ticket.ROJO]: 'assets/images/bracelet-red.png',
+    [Ticket.AMARILLO]: 'assets/images/bracelet-yellow.png',
+    [Ticket.VERDE]: 'assets/images/bracelet-green.png',
+  };
 
   ngOnInit(): void {
     this.credentialLoaded.emit();
@@ -63,17 +70,7 @@ export class PostulantCredentialComponent implements OnInit, OnChanges {
       const nameTop = 190;
       const nameLeft = this.canvasWidth / 2;
 
-      switch (this.postulant.ticket) {
-        case 'VERDE':
-          templateImage.src = 'assets/images/bracelet-green.png';
-          break;
-        case 'AMARILLO':
-          templateImage.src = 'assets/images/bracelet-yellow.png';
-          break;
-        case 'ROJO':
-          templateImage.src = 'assets/images/bracelet-red.png';
-          break;
-      }
+      templateImage.src = this.TICKET_PATHS[this.postulant.ticket];
 
       templateImage.onload = () => {
         let qrImage = this.qrCode.qrcElement.nativeElement.querySelector('img');
