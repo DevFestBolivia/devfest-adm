@@ -1,6 +1,8 @@
 import { Component, ViewChildren, QueryList } from '@angular/core';
 
 import { jsPDF } from 'jspdf';
+import JSZip from 'jszip/dist/jszip';
+import * as FileSaver from 'file-saver';
 
 import { PostulantsService } from '../core/services/postulants.service';
 import { PostulantCredentialComponent } from '../shared/components/postulant-credential/postulant-credential.component';
@@ -86,5 +88,43 @@ export class CredentialsComponent {
     });
 
     pdf.save('devfest-credentials.pdf');
+  }
+
+  exportImages() {
+    let itemsName = [];
+    let items = [];
+
+    this.credentials.forEach((credential) => {
+      let item = document.getElementById(
+        'assistant-' + credential.postulant.id,
+      );
+      const image = item.querySelector('canvas').toDataURL();
+
+      let blobData = this.convertBase64ToBlob(image);
+
+      const blob = new Blob([blobData], { type: 'image/png' });
+      itemsName.push('assistant-' + credential.postulant.id);
+      items.push(blob);
+    });
+
+    var zip = new JSZip();
+    items.forEach((value, i) => {
+      zip.file(itemsName[i] + '.jpg', value, { base64: true });
+    });
+
+    zip.generateAsync({ type: 'blob' }).then(function (content) {
+      FileSaver.saveAs(content, 'bracelets.zip');
+    });
+  }
+
+  private convertBase64ToBlob(Base64Image: any) {
+    const parts = Base64Image.split(';base64,');
+    const imageType = parts[0].split(':')[1];
+    const decodedData = window.atob(parts[1]);
+    const uInt8Array = new Uint8Array(decodedData.length);
+    for (let i = 0; i < decodedData.length; ++i) {
+      uInt8Array[i] = decodedData.charCodeAt(i);
+    }
+    return new Blob([uInt8Array], { type: imageType });
   }
 }

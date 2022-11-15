@@ -40,6 +40,7 @@ export class PostulantCredentialComponent implements OnInit, OnChanges {
     [Ticket.ROJO]: 'assets/images/bracelet-red.png',
     [Ticket.AMARILLO]: 'assets/images/bracelet-yellow.png',
     [Ticket.VERDE]: 'assets/images/bracelet-green.png',
+    [Ticket.AZUL]: 'assets/images/bracelet-blue.png',
   };
 
   ngOnInit(): void {
@@ -65,10 +66,12 @@ export class PostulantCredentialComponent implements OnInit, OnChanges {
         this.credentialCanvas.nativeElement as HTMLCanvasElement
       ).getContext('2d');
       const templateImage = new Image();
-      const qrTop = 0;
+      const qrTop = 40;
       const qrLeft = 0;
-      const nameTop = 190;
+      const nameTop = 18;
       const nameLeft = this.canvasWidth / 2;
+      const maxWith = 80;
+      const secondNameTop = nameTop + 15;
 
       templateImage.src = this.TICKET_PATHS[this.postulant.ticket];
 
@@ -82,9 +85,16 @@ export class PostulantCredentialComponent implements OnInit, OnChanges {
 
         if (qrImage) {
           context.drawImage(templateImage, 0, 0);
-          context.font = '20px Montserrat';
+          context.font = 'bold 12px Montserrat';
           context.textAlign = 'center';
-          context.fillText('', nameLeft, nameTop);
+          const names = this.postulant.fullName.split(' ');
+          context.fillText(names[0], nameLeft, nameTop, maxWith);
+          context.fillText(
+            names[1] ? names[1] : '',
+            nameLeft,
+            secondNameTop,
+            maxWith,
+          );
           context.drawImage(qrImage, qrLeft, qrTop);
         }
       };

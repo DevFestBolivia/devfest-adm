@@ -21,11 +21,7 @@
           <p><b>Phone: </b> {{ postulant.phone }}</p>
           <p><b>City: </b> {{ postulant.city }}</p>
           <p><b>Ticket: </b> {{ postulant.ticket }}</p>
-          <a
-            class="btn" 
-            [href]="postulant.transferSupportURL"
-            target="_blank"
-          >
+          <a class="btn" [href]="postulant.transferSupportURL" target="_blank">
             Open Bank Transfer Receipt
           </a>
           <p>
@@ -92,8 +88,8 @@
           #credential
           [postulant]="postulant"
           (credentialLoaded)="setPostulantCredential(credential)"
-          canvasWidth="75"
-          canvasHeight="779"
+          canvasWidth="80"
+          canvasHeight="841"
         >
         </wc-postulant-credential>
       </div>
