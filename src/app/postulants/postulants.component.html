@@ -4,7 +4,7 @@
       <div class="col s12 postulant-header">
         <div class="row">
           <div class="col s12 m9">
-            <h3>Postulants</h3>
+            <h3>Postulants ({{ visiblePostulants.length }})</h3>
           </div>
           <div class="col s12 m3 right-align">
             <a
@@ -27,6 +27,40 @@
           (ngModelChange)="searchPostulant()"
         />
       </div>
+      <div class="input-field col s12 m8">
+        <form class="ticket-filter">
+          <p (click)="applyTicketFilter(null)">
+            <label>
+              <input name="ticketFilter" type="radio" checked />
+              <span>TODOS</span>
+            </label>
+          </p>
+          <p (click)="applyTicketFilter(Ticket.ROJO)">
+            <label>
+              <input name="ticketFilter" type="radio" />
+              <span>ROJO</span>
+            </label>
+          </p>
+          <p (click)="applyTicketFilter(Ticket.AMARILLO)">
+            <label>
+              <input name="ticketFilter" type="radio" />
+              <span>AMARILLO</span>
+            </label>
+          </p>
+          <p (click)="applyTicketFilter(Ticket.VERDE)">
+            <label>
+              <input name="ticketFilter" type="radio" />
+              <span>VERDE</span>
+            </label>
+          </p>
+          <p (click)="applyTicketFilter(Ticket.AZUL)">
+            <label>
+              <input name="ticketFilter" type="radio" />
+              <span>AZUL</span>
+            </label>
+          </p>
+        </form>
+      </div>
     </div>
     <table class="highlight">
       <thead>
@@ -34,6 +68,7 @@
           <th>#</th>
           <th>Name</th>
           <th class="hide-on-small-only">Phone</th>
+          <th>Ticket</th>
           <th>Transfer file</th>
           <th class="center-align">Validated</th>
           <th class="center-align">Sent</th>
@@ -58,6 +93,11 @@
             <td class="hide-on-small-only">
               <a [routerLink]="['/postulants', postulant.id]">{{
                 postulant.phone
+              }}</a>
+            </td>
+            <td>
+              <a [routerLink]="['/postulants', postulant.id]">{{
+                postulant.ticket
               }}</a>
             </td>
             <td>

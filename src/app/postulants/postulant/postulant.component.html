@@ -10,7 +10,7 @@
             <a
               class="postulant-print-btn waves-effect waves-light btn modal-trigger"
               href="#print-credential"
-              >Credential</a
+              >Bracelet</a
             >
           </div>
         </div>
@@ -87,14 +87,14 @@
 <div wcModal id="print-credential" class="modal">
   <ng-container *ngIf="postulant">
     <div class="modal-content">
-      <h4>Print Credential</h4>
+      <h4>Print Bracelet</h4>
       <div *ngIf="postulant.validated" class="center-align">
         <wc-postulant-credential
           #credential
           [postulant]="postulant"
           (credentialLoaded)="setPostulantCredential(credential)"
-          canvasWidth="80"
-          canvasHeight="841"
+          canvasWidth="236"
+          canvasHeight="2480"
         >
         </wc-postulant-credential>
       </div>

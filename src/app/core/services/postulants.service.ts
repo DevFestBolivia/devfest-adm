@@ -8,11 +8,20 @@ import { Postulant } from '../models/postulant.model';
 import { FirestoreCollection } from '../models/firestore-collection.enum';
 import { DataOrder } from '../models/data-order.enum';
 import { AuthUser } from '../models/auth-user.model';
+import { Ticket } from '../models/ticket.enum';
 
 @Injectable({ providedIn: 'root' })
 export class PostulantsService extends DataService<Postulant> {
   constructor(db: AngularFirestore) {
     super(db, FirestoreCollection.attendees);
+  }
+
+  getPostulantsByTicket(ticket: Ticket): Observable<Postulant[]> {
+    return this.db
+      .collection<Postulant>(this.collection, (ref) =>
+        ref.where('deleted', '==', false).where('ticket', '==', ticket),
+      )
+      .valueChanges();
   }
 
   getAcceptedPostulants(): Observable<Postulant[]> {

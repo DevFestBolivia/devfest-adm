@@ -53,9 +53,11 @@ export class PostulantCredentialComponent implements OnInit, OnChanges {
 
   print(): void {
     const printButton = document.createElement('a');
-    printButton.download = this.postulant.fullName;
-    printButton.href =
-      this.credentialCanvas.nativeElement.toDataURL('image/png;base64');
+    printButton.download = 'Assistant - ' + this.postulant.fullName;
+    printButton.href = this.credentialCanvas.nativeElement.toDataURL(
+      'image/jpg',
+      1.0,
+    );
     printButton.click();
   }
 
@@ -66,12 +68,12 @@ export class PostulantCredentialComponent implements OnInit, OnChanges {
         this.credentialCanvas.nativeElement as HTMLCanvasElement
       ).getContext('2d');
       const templateImage = new Image();
-      const qrTop = 40;
+      const qrTop = 100;
       const qrLeft = 0;
-      const nameTop = 18;
+      const nameTop = 55;
       const nameLeft = this.canvasWidth / 2;
-      const maxWith = 80;
-      const secondNameTop = nameTop + 15;
+      const maxWith = 236;
+      const secondNameTop = nameTop + 35;
 
       templateImage.src = this.TICKET_PATHS[this.postulant.ticket];
 
@@ -85,7 +87,7 @@ export class PostulantCredentialComponent implements OnInit, OnChanges {
 
         if (qrImage) {
           context.drawImage(templateImage, 0, 0);
-          context.font = 'bold 12px Montserrat';
+          context.font = 'bold 32px Montserrat';
           context.textAlign = 'center';
           const names = this.postulant.fullName.split(' ');
           context.fillText(names[0], nameLeft, nameTop, maxWith);

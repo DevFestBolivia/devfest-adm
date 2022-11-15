@@ -1,3 +1,12 @@
+.ticket-filter {
+  display: flex;
+
+  [type='radio']:not(:checked) + span,
+  [type='radio']:checked + span {
+    padding: 0 20px 0 24px;
+  }
+}
+
 .postulant-row {
   cursor: pointer;
 }
