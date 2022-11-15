@@ -99,11 +99,11 @@ export class CredentialsComponent {
       let item = document.getElementById(
         'assistant-' + credential.postulant.id,
       );
-      const image = item.querySelector('canvas').toDataURL();
+      const image = item.querySelector('canvas').toDataURL('image/jpg', 1.0);
 
       let blobData = this.convertBase64ToBlob(image);
 
-      const blob = new Blob([blobData], { type: 'image/png' });
+      const blob = new Blob([blobData], { type: 'image/jpg' });
       itemsName.push('Assistant - ' + credential.postulant.fullName);
       items.push(blob);
     });
