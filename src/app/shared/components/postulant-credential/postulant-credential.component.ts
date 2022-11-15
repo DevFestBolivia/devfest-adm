@@ -13,6 +13,7 @@ import {
 import { QRCodeComponent } from 'angularx-qrcode';
 
 import { Postulant } from '../../../core/models/postulant.model';
+import { Ticket } from '../../../core/models/ticket.enum';
 
 @Component({
   selector: 'wc-postulant-credential',
@@ -34,6 +35,13 @@ export class PostulantCredentialComponent implements OnInit, OnChanges {
   private qrCode: QRCodeComponent;
 
   @Output() private credentialLoaded = new EventEmitter();
+
+  private readonly TICKET_PATHS: Record<Ticket, string> = {
+    [Ticket.ROJO]: 'assets/images/bracelet-red.png',
+    [Ticket.AMARILLO]: 'assets/images/bracelet-yellow.png',
+    [Ticket.VERDE]: 'assets/images/bracelet-green.png',
+    [Ticket.AZUL]: 'assets/images/bracelet-blue.png',
+  };
 
   ngOnInit(): void {
     this.credentialLoaded.emit();
@@ -58,22 +66,14 @@ export class PostulantCredentialComponent implements OnInit, OnChanges {
         this.credentialCanvas.nativeElement as HTMLCanvasElement
       ).getContext('2d');
       const templateImage = new Image();
-      const qrTop = 0;
+      const qrTop = 40;
       const qrLeft = 0;
-      const nameTop = 190;
+      const nameTop = 18;
       const nameLeft = this.canvasWidth / 2;
+      const maxWith = 80;
+      const secondNameTop = nameTop + 15;
 
-      switch (this.postulant.ticket) {
-        case 'VERDE':
-          templateImage.src = 'assets/images/bracelet-green.png';
-          break;
-        case 'AMARILLO':
-          templateImage.src = 'assets/images/bracelet-yellow.png';
-          break;
-        case 'ROJO':
-          templateImage.src = 'assets/images/bracelet-red.png';
-          break;
-      }
+      templateImage.src = this.TICKET_PATHS[this.postulant.ticket];
 
       templateImage.onload = () => {
         let qrImage = this.qrCode.qrcElement.nativeElement.querySelector('img');
@@ -85,9 +85,16 @@ export class PostulantCredentialComponent implements OnInit, OnChanges {
 
         if (qrImage) {
           context.drawImage(templateImage, 0, 0);
-          context.font = '20px Montserrat';
+          context.font = 'bold 12px Montserrat';
           context.textAlign = 'center';
-          context.fillText('', nameLeft, nameTop);
+          const names = this.postulant.fullName.split(' ');
+          context.fillText(names[0], nameLeft, nameTop, maxWith);
+          context.fillText(
+            names[1] ? names[1] : '',
+            nameLeft,
+            secondNameTop,
+            maxWith,
+          );
           context.drawImage(qrImage, qrLeft, qrTop);
         }
       };

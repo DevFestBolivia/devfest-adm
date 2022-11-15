@@ -22,9 +22,10 @@
           <p><b>City: </b> {{ postulant.city }}</p>
           <p><b>Ticket: </b> {{ postulant.ticket }}</p>
           <a
-            class="btn" 
+            class="btn"
             [href]="postulant.transferSupportURL"
             target="_blank"
+            rel="noopener noreferrer"
           >
             Open Bank Transfer Receipt
           </a>
@@ -92,8 +93,8 @@
           #credential
           [postulant]="postulant"
           (credentialLoaded)="setPostulantCredential(credential)"
-          canvasWidth="75"
-          canvasHeight="779"
+          canvasWidth="80"
+          canvasHeight="841"
         >
         </wc-postulant-credential>
       </div>

@@ -59,7 +59,9 @@
               "raf",
               "rgbcolor",
               "dompurify",
-              "html2canvas"
+              "html2canvas",
+              "file-saver",
+              "jszip"
             ],
             "stylePreprocessorOptions": {
               "includePaths": ["./node_modules"]
