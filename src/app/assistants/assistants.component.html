@@ -42,43 +42,6 @@
             <td>{{ i + 1 }}</td>
             <td>{{ assistant.fullName }}</td>
             <td>
-              <p
-                *ngIf="
-                  !rfidInputEnabled ||
-                  (rfidInputEnabled && assistant.id !== currentAssistant.id)
-                "
-              >
-                <a (click)="enableEditingRFID(assistant)">
-                  <i class="fas fa-edit"></i>
-                </a>
-                RFID#:
-                <b
-                  [ngClass]="{
-                    'red-text': !assistant.rfid,
-                    'green-text text-darken-1': assistant.rfid
-                  }"
-                >
-                  {{
-                    assistant.rfid ? assistant.rfid : 'Do not forget the RFID'
-                  }}
-                </b>
-              </p>
-              <div
-                *ngIf="rfidInputEnabled && assistant.id === currentAssistant.id"
-              >
-                <a (click)="saveAssistantRFID(currentUser, assistant)"
-                  ><i class="fas fa-save"></i
-                ></a>
-                <div class="input-field inline">
-                  <input
-                    id="rfid"
-                    type="text"
-                    [(ngModel)]="assistant.rfid"
-                    (keyup.enter)="saveAssistantRFID(currentUser, assistant)"
-                  />
-                  <label for="rfid">RFID#</label>
-                </div>
-              </div>
               <p>
                 <label>
                   <input
