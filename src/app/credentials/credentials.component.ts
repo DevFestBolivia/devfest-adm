@@ -66,7 +66,7 @@ export class CredentialsComponent {
       drawCounter++;
 
       const credentialData =
-        credential.credentialCanvas.nativeElement.toDataURL('image/jpeg', 1.0);
+        credential.credentialCanvas.nativeElement.toDataURL('image/png', 1.0);
       const { leftPosition, topPosition } =
         this.CREDENTIALS_POSITION_DATA[counter];
 
@@ -99,18 +99,18 @@ export class CredentialsComponent {
       let item = document.getElementById(
         'assistant-' + credential.postulant.id,
       );
-      const image = item.querySelector('canvas').toDataURL('image/jpg', 1.0);
+      const image = item.querySelector('canvas').toDataURL('image/png', 1.0);
 
       let blobData = this.convertBase64ToBlob(image);
 
-      const blob = new Blob([blobData], { type: 'image/jpg' });
+      const blob = new Blob([blobData], { type: 'image/png' });
       itemsName.push('Assistant - ' + credential.postulant.fullName);
       items.push(blob);
     });
 
     var zip = new JSZip();
     items.forEach((value, i) =>
-      zip.file(itemsName[i] + '.jpg', value, { base64: true }),
+      zip.file(itemsName[i] + '.png', value, { base64: true }),
     );
 
     zip
