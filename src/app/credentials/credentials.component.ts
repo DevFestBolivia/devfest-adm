@@ -103,7 +103,7 @@ export class CredentialsComponent {
       let blobData = this.convertBase64ToBlob(image);
 
       const blob = new Blob([blobData], { type: 'image/png' });
-      itemsName.push('assistant-' + credential.postulant.id);
+      itemsName.push('Assistant - ' + credential.postulant.fullName);
       items.push(blob);
     });
 
