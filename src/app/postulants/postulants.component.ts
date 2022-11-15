@@ -1,10 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { AuthService } from '../core/services/auth/auth.service';
-import { AuthUser } from '../core/models/auth-user.model';
 import { PostulantsService } from '../core/services/postulants.service';
 import { Postulant } from '../core/models/postulant.model';
 import { DataOrder } from '../core/models/data-order.enum';

@@ -21,7 +21,12 @@
           <p><b>Phone: </b> {{ postulant.phone }}</p>
           <p><b>City: </b> {{ postulant.city }}</p>
           <p><b>Ticket: </b> {{ postulant.ticket }}</p>
-          <a class="btn" [href]="postulant.transferSupportURL" target="_blank">
+          <a
+            class="btn"
+            [href]="postulant.transferSupportURL"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Open Bank Transfer Receipt
           </a>
           <p>

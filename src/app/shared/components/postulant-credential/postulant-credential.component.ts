@@ -11,9 +11,9 @@ import {
 } from '@angular/core';
 
 import { QRCodeComponent } from 'angularx-qrcode';
-import { Ticket } from 'src/app/core/models/ticket.enum';
 
 import { Postulant } from '../../../core/models/postulant.model';
+import { Ticket } from '../../../core/models/ticket.enum';
 
 @Component({
   selector: 'wc-postulant-credential',
