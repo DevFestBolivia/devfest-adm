@@ -19,7 +19,10 @@ export class PostulantsService extends DataService<Postulant> {
   getPostulantsByTicket(ticket: Ticket): Observable<Postulant[]> {
     return this.db
       .collection<Postulant>(this.collection, (ref) =>
-        ref.where('deleted', '==', false).where('ticket', '==', ticket),
+        ref
+          .where('deleted', '==', false)
+          .where('ticket', '==', ticket)
+          .orderBy('fullName', 'asc'),
       )
       .valueChanges();
   }
