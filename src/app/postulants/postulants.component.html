@@ -62,6 +62,9 @@
         </form>
       </div>
     </div>
+    <span class="hide-on-med-and-up">
+      *Rotate your phone to see all table options
+    </span>
     <table class="highlight">
       <thead>
         <tr>
@@ -69,9 +72,9 @@
           <th>Name</th>
           <th class="hide-on-small-only">Phone</th>
           <th>Ticket</th>
-          <th>Transfer file</th>
-          <th class="center-align">Validated</th>
-          <th class="center-align">Sent</th>
+          <th class="hide-on-small-only">Transfer file</th>
+          <th class="center-align hide-on-small-only">Validated</th>
+          <th class="center-align hide-on-small-only">Sent</th>
           <th></th>
         </tr>
       </thead>
@@ -100,7 +103,7 @@
                 postulant.ticket
               }}</a>
             </td>
-            <td>
+            <td class="hide-on-small-only">
               <a
                 [href]="postulant.transferSupportURL"
                 target="_blank"
@@ -109,7 +112,7 @@
                 File
               </a>
             </td>
-            <td class="center-align">
+            <td class="center-align hide-on-small-only">
               <label>
                 <input
                   type="checkbox"
@@ -121,7 +124,7 @@
                 <span></span>
               </label>
             </td>
-            <td class="center-align">
+            <td class="center-align hide-on-small-only">
               <label>
                 <input
                   type="checkbox"

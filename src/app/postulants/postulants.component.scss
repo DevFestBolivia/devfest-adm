@@ -1,5 +1,6 @@
 .ticket-filter {
   display: flex;
+  flex-wrap: wrap;
 
   [type='radio']:not(:checked) + span,
   [type='radio']:checked + span {
