@@ -167,6 +167,14 @@ export const registrationFields = {
         field: 'shirt',
         label: 'Polera',
       },
+      {
+        field: 'bracelet',
+        label: 'Manilla',
+      },
+      {
+        field: 'notebook',
+        label: 'Cuaderno',
+      },
     ],
   },
 };
