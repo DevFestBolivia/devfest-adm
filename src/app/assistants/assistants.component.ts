@@ -4,20 +4,28 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { AuthService } from '../core/services/auth/auth.service';
-import { AuthUser } from '../core/models/auth-user.model';
 import { Postulant } from '../core/models/postulant.model';
 import { PostulantsService } from '../core/services/postulants.service';
+import { Ticket } from '../core/models/ticket.enum';
+import {
+  registrationFields,
+  workshops,
+} from '../core/models/registration.const';
 
 @Component({
   selector: 'wc-assistants',
   templateUrl: './assistants.component.html',
+  styleUrls: ['./assistants.component.scss'],
 })
 export class AssistantsComponent implements OnInit, OnDestroy {
   assistants: Postulant[];
   currentAssistant: Postulant;
   currentUser$ = this.auth.getCurrentUser();
-  rfidInputEnabled = false;
+  registrationFields = registrationFields;
   searchTerm = '';
+  workshops = workshops;
+
+  Ticket = Ticket;
 
   private unsubscribe$ = new Subject<void>();
 
@@ -55,19 +63,5 @@ export class AssistantsComponent implements OnInit, OnDestroy {
         (assistant) => (assistant.visibleInSearch = true),
       );
     }
-  }
-
-  enableEditingRFID(assistant: Postulant): void {
-    this.rfidInputEnabled = true;
-    this.currentAssistant = assistant;
-  }
-
-  saveAssistantRFID(currentUser: AuthUser, assistant: Postulant): void {
-    this.postulantsService.giveRFIDToPostulant(
-      currentUser,
-      assistant,
-      assistant.rfid,
-    );
-    this.rfidInputEnabled = false;
   }
 }

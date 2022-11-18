@@ -6,13 +6,14 @@
           <div class="col s12 m9">
             <h3>Assistants</h3>
           </div>
-          <div class="col s12 m3 right-align">
+          <!-- TODO: Define if this will be used: -->
+          <!-- <div class="col s12 m3 right-align">
             <a
               routerLink="/assistants/scores"
               class="postulant-print-btn waves-effect waves-light btn"
               >Scores</a
             >
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -40,86 +41,87 @@
         <tr *ngFor="let assistant of assistants; index as i">
           <ng-container *ngIf="assistant.visibleInSearch">
             <td>{{ i + 1 }}</td>
-            <td>{{ assistant.fullName }}</td>
             <td>
-              <p>
-                <label>
+              {{ assistant.fullName }} <br />
+              <span class="ticket-{{ assistant.ticket | lowercase }}">
+                Ticket: {{ assistant.ticket }}
+              </span>
+              <br />
+              Food Restriction: {{ assistant.foodRestriction }}
+            </td>
+            <td>
+              <p>Viernes 18</p>
+              <p
+                *ngFor="
+                  let field of registrationFields[assistant.ticket].firstDay
+                "
+              >
+                <ng-container
+                  [ngTemplateOutlet]="registrationBox"
+                  [ngTemplateOutletContext]="{ field: field }"
+                ></ng-container>
+              </p>
+              <hr />
+              <p>Sábado 19</p>
+              <p
+                *ngFor="
+                  let field of registrationFields[assistant.ticket].secondDay
+                "
+              >
+                <ng-container
+                  [ngTemplateOutlet]="registrationBox"
+                  [ngTemplateOutletContext]="{ field: field }"
+                ></ng-container>
+              </p>
+              <ng-container
+                *ngIf="
+                  assistant.ticket === Ticket.ROJO ||
+                  assistant.ticket === Ticket.AMARILLO ||
+                  assistant.shirtSize
+                "
+              >
+                <hr />
+                <p>Souvenirs</p>
+                <p
+                  *ngFor="
+                    let field of registrationFields[assistant.ticket].souvenirs
+                  "
+                >
+                  <ng-container
+                    [ngTemplateOutlet]="registrationBox"
+                    [ngTemplateOutletContext]="{ field: field }"
+                  ></ng-container>
+                </p>
+              </ng-container>
+              <hr />
+              <p>Talleres</p>
+              <p *ngFor="let field of workshops">
+                <ng-container
+                  [ngTemplateOutlet]="registrationBox"
+                  [ngTemplateOutletContext]="{ field: field }"
+                ></ng-container>
+              </p>
+
+              <ng-template #registrationBox let-field="field">
+                <label *ngIf="field.field !== 'shirt' || assistant.shirtSize">
                   <input
                     type="checkbox"
-                    [checked]="assistant.checkIn"
+                    [checked]="assistant[field.field]"
                     (change)="
-                      postulantsService.checkInAssistant(currentUser, assistant)
+                      assistant[field.field] = !assistant[field.field];
+                      postulantsService.upsertData(assistant)
                     "
                   />
-                  <span>CheckIn</span>
+                  <span>
+                    {{ field.label }}
+                    {{
+                      field.field === 'shirt'
+                        ? '"' + assistant.shirtSize + '"'
+                        : ''
+                    }}
+                  </span>
                 </label>
-              </p>
-              <p>
-                <label>
-                  <input
-                    type="checkbox"
-                    [checked]="assistant.feeForLunchReceived"
-                    [disabled]="!assistant.checkIn"
-                    (change)="
-                      postulantsService.markFeeForLunchAsReceived(
-                        currentUser,
-                        assistant
-                      )
-                    "
-                  />
-                  <span>FeeForLunch</span>
-                </label>
-              </p>
-              <p>
-                <label>
-                  <input
-                    type="checkbox"
-                    [checked]="assistant.firstSnackDelivered"
-                    [disabled]="!assistant.checkIn"
-                    (change)="
-                      postulantsService.markFirstSnackAsDelivered(
-                        currentUser,
-                        assistant
-                      )
-                    "
-                  />
-                  <span>Snack#1</span>
-                </label>
-              </p>
-              <p>
-                <label>
-                  <input
-                    type="checkbox"
-                    [checked]="assistant.lunchDelivered"
-                    [disabled]="
-                      !assistant.checkIn || !assistant.feeForLunchReceived
-                    "
-                    (change)="
-                      postulantsService.markLunchAsDelivered(
-                        currentUser,
-                        assistant
-                      )
-                    "
-                  />
-                  <span>Lunch</span>
-                </label>
-              </p>
-              <p>
-                <label>
-                  <input
-                    type="checkbox"
-                    [checked]="assistant.secondSnackDelivered"
-                    [disabled]="!assistant.checkIn"
-                    (change)="
-                      postulantsService.markSecondSnackAsDelivered(
-                        currentUser,
-                        assistant
-                      )
-                    "
-                  />
-                  <span>Snack#2</span>
-                </label>
-              </p>
+              </ng-template>
             </td>
           </ng-container>
         </tr>

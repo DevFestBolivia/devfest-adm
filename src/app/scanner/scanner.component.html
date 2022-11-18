@@ -6,49 +6,7 @@
           <div class="col s12 m9">
             <h3>Scanner</h3>
           </div>
-          <div class="input-field col s12 m3">
-            <select wcSelect [(ngModel)]="selectedItemForScan">
-              <option value="" disabled selected>Choose an option</option>
-              <option *ngIf="!currentUser.roles.speaker" value="checkIn"
-                >CheckIn</option
-              >
-              <option
-                *ngIf="!currentUser.roles.speaker"
-                value="feeForLunchReceived"
-                >FeeForLunch</option
-              >
-              <option
-                *ngIf="!currentUser.roles.speaker"
-                value="firstSnackDelivered"
-                >Snack#1</option
-              >
-              <option *ngIf="!currentUser.roles.speaker" value="lunchDelivered"
-                >Lunch</option
-              >
-              <option
-                *ngIf="!currentUser.roles.speaker"
-                value="secondSnackDelivered"
-                >Snack#2</option
-              >
-              <option
-                *ngIf="!currentUser.roles.staff"
-                value="teachersWhoGavePoints"
-                >Points
-              </option>
-            </select>
-            <label></label>
-          </div>
         </div>
-      </div>
-    </div>
-    <div *ngIf="selectedItemForScan === 'teachersWhoGavePoints'" class="row">
-      <div class="center-align">
-        <p>How many points you want to give to the student?</p>
-        <star-rating
-          starType="svg"
-          [rating]="postulantPoints"
-          (starClickChange)="setPostulantRate($event)"
-        ></star-rating>
       </div>
     </div>
     <div class="row center-align">
@@ -67,34 +25,92 @@
 >
   <div class="modal-content">
     <ng-container *ngIf="postulant">
-      <div
-        [ngClass]="{
-          'red-text': modalImage === images.error,
-          'green-text': modalImage === images.info
-        }"
-        class="center-align"
-      >
-        <h4>{{ modalMessage }}</h4>
-        <img [src]="modalImage" [alt]="modalMessage" />
-        <p>{{ postulant.fullName }}</p>
+      <div class="center-align">
+        <h4>{{ postulant.fullName }}</h4>
+        <p class="ticket-{{ postulant.ticket | lowercase }}"
+          >Ticket: {{ postulant.ticket }}</p
+        >
+        <p> Food Restriction: {{ postulant.foodRestriction }} </p>
+      </div>
+
+      <div class="container">
+        <p>Viernes 18</p>
+        <p *ngFor="let field of registrationFields[postulant.ticket].firstDay">
+          <ng-container
+            [ngTemplateOutlet]="registrationBox"
+            [ngTemplateOutletContext]="{ field: field }"
+          ></ng-container>
+        </p>
+        <hr />
+        <p>Sábado 19</p>
+        <p *ngFor="let field of registrationFields[postulant.ticket].secondDay">
+          <ng-container
+            [ngTemplateOutlet]="registrationBox"
+            [ngTemplateOutletContext]="{ field: field }"
+          ></ng-container>
+        </p>
+        <ng-container
+          *ngIf="
+            postulant.ticket === Ticket.ROJO ||
+            postulant.ticket === Ticket.AMARILLO ||
+            postulant.shirtSize
+          "
+        >
+          <hr />
+          <p>Souvenirs</p>
+          <p
+            *ngFor="let field of registrationFields[postulant.ticket].souvenirs"
+          >
+            <ng-container
+              [ngTemplateOutlet]="registrationBox"
+              [ngTemplateOutletContext]="{ field: field }"
+            ></ng-container>
+          </p>
+        </ng-container>
+        <hr />
+        <p>Talleres</p>
+        <p *ngFor="let field of workshops">
+          <ng-container
+            [ngTemplateOutlet]="registrationBox"
+            [ngTemplateOutletContext]="{ field: field }"
+          ></ng-container>
+        </p>
       </div>
     </ng-container>
+
+    <ng-template #registrationBox let-field="field">
+      <label *ngIf="field.field !== 'shirt' || postulant.shirtSize">
+        <input
+          type="checkbox"
+          [checked]="postulant[field.field]"
+          (change)="
+            postulant[field.field] = !postulant[field.field];
+            postulantsService.upsertData(postulant)
+          "
+        />
+        <span>
+          {{ field.label }}
+          {{ field.field === 'shirt' ? '"' + postulant.shirtSize + '"' : '' }}
+        </span>
+      </label>
+    </ng-template>
+
     <ng-container *ngIf="!postulant">
       <div class="red-text center-align">
         <h4>{{ modalMessage }}</h4>
-        <img [src]="modalImage" [alt]="modalMessage" />
+        <img src="assets/images/error.png" alt="Imagen de error" />
         <p><b>The scanner reads: </b> {{ postulantId }}</p>
       </div>
     </ng-container>
   </div>
   <div class="modal-footer">
     <button
-      *ngIf="modalImage === images.info"
+      *ngIf="postulant"
       class="modal-close waves-effect waves-light btn ok-btn"
       >Ok</button
     >
     <button
-      *ngIf="modalImage === images.error"
+      *ngIf="!postulant"
       class="modal-close waves-effect waves-light btn cancel-btn"
       >Try again</button
     >
